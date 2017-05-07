@@ -18,20 +18,25 @@ public class GameScreen implements Screen, InputProcessor{
     //thickness of the circle
     static final float THICKNESS = CIRCLE_RADIUS *0.1f;
 
-    ShapeRenderer shapeRenderer;
-    OrthographicCamera camera;
+    private ShapeRenderer shapeRenderer;
+    private OrthographicCamera camera;
+    //view port width. A window to the game world.
+    // The viewport height will be calculated from the ratio of the actual game window/phone screen
+    //ratio
+    private float viewPortWidth = 1080;
 
-    Circle circle;
-    PlayerBall playerBall;
+
+    private Circle circle;
+    private PlayerBall playerBall;
 
     //touch vector
-    Vector3 touchVect;
+    private Vector3 touchVect;
 
 
     public GameScreen(){
         shapeRenderer = new ShapeRenderer();
         //setup camera for the gameScreen
-        camera = new OrthographicCamera(MainGame.WIDTH, MainGame.HEIGHT);
+        camera = new OrthographicCamera(viewPortWidth, viewPortWidth * Gdx.graphics.getHeight()/Gdx.graphics.getWidth());
 
         circle = new Circle(THICKNESS);
         playerBall = new PlayerBall();
@@ -61,7 +66,10 @@ public class GameScreen implements Screen, InputProcessor{
 
     @Override
     public void resize(int width, int height) {
-
+        //calculate the viewport height from the height, width ratio. This scales everything well
+        camera.viewportWidth = viewPortWidth;
+        camera.viewportHeight = viewPortWidth * height/width;
+        camera.update();
     }
 
     @Override
