@@ -13,10 +13,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MainGame extends Game {
 	private Screen gameScreen;
-	//width and height of the area we want to create the circle
-	//height is mever used
-	static final int HEIGHT = 1000;
-	static final int WIDTH = 1000;
+
+
 
 	OrthographicCamera camera;
 	@Override

@@ -10,10 +10,10 @@ import static com.kenboo.looprunner.GameScreen.CIRCLE_RADIUS;
  * Created by kenbo on 2017-05-06.
  */
 
-public class Circle {
+public class BackgroundCircle {
     //class to draw the circle in the background
     float thickness;
-    public Circle(float thickness){
+    public BackgroundCircle(float thickness){
         this.thickness = thickness;
     }
     public void draw(ShapeRenderer renderer){

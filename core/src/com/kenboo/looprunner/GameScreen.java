@@ -3,8 +3,6 @@ package com.kenboo.looprunner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
@@ -14,7 +12,9 @@ import com.badlogic.gdx.math.*;
  */
 
 public class GameScreen implements Screen, InputProcessor{
-    static final float CIRCLE_RADIUS = MainGame.WIDTH*0.75f/2;
+    //width of the area
+    static final int WIDTH = 1000;
+    static final float CIRCLE_RADIUS = WIDTH*0.75f/2;
     //thickness of the circle
     static final float THICKNESS = CIRCLE_RADIUS *0.1f;
 
@@ -26,8 +26,10 @@ public class GameScreen implements Screen, InputProcessor{
     private float viewPortWidth = 1080;
 
 
-    private Circle circle;
+    private BackgroundCircle circle;
     private PlayerBall playerBall;
+    //a temporary test block to test all the block functions
+    private BlockManager blockManger;
 
     //touch vector
     private Vector3 touchVect;
@@ -38,9 +40,9 @@ public class GameScreen implements Screen, InputProcessor{
         //setup camera for the gameScreen
         camera = new OrthographicCamera(viewPortWidth, viewPortWidth * Gdx.graphics.getHeight()/Gdx.graphics.getWidth());
 
-        circle = new Circle(THICKNESS);
+        circle = new BackgroundCircle(THICKNESS);
         playerBall = new PlayerBall();
-
+        blockManger = new BlockManager();
         touchVect = new Vector3();
 
     }
@@ -54,13 +56,19 @@ public class GameScreen implements Screen, InputProcessor{
     public void render(float delta) {
         //update
         playerBall.update(Gdx.graphics.getDeltaTime());
-        //draw
+        blockManger.update(Gdx.graphics.getDeltaTime());
+        //check collision
+        if(blockManger.checkCollision(playerBall)){
+            Gdx.app.exit();
+        }
+        //setup shape renderer
         shapeRenderer.setProjectionMatrix(camera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-
+        //draw
         circle.draw(shapeRenderer);
         playerBall.draw(shapeRenderer);
-
+        blockManger.draw(shapeRenderer);
+        //end shape renderer
         shapeRenderer.end();
     }
 
