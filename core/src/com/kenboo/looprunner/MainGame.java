@@ -8,12 +8,14 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
 public class MainGame extends Game {
-	private Screen gameScreen;
 
+	private Screen currentScreen;
+	BitmapFont startFont;
 
 
 	OrthographicCamera camera;
@@ -21,8 +23,8 @@ public class MainGame extends Game {
 	public void create () {
 
 		//the main game screen
-		gameScreen = new GameScreen();
-		setScreen(gameScreen);
+		currentScreen = new StartScreen(this);
+		setScreen(currentScreen);
 
 
 
@@ -32,11 +34,17 @@ public class MainGame extends Game {
 	public void render () {
 		Gdx.gl.glClearColor(1, 1, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        gameScreen.render(Gdx.graphics.getDeltaTime());
+		currentScreen.render(Gdx.graphics.getDeltaTime());
+
 
 	}
 	
 	@Override
 	public void dispose () {
+	}
+	public void changeScreen(Screen screen){
+		currentScreen.dispose();
+		currentScreen = screen;
+		setScreen(currentScreen);
 	}
 }
