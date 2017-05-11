@@ -17,8 +17,8 @@ public class BlockManager {
         blocks = new ArrayList<Block>();
         blocks.add(new Block(-400,100, 50,300));
         blocks.add(new Block(0, -600, 300,50));
-        blocks.get(0).setVelocity(30,40);
-        blocks.get(1).setVelocity(5,48);
+        blocks.get(0).setVelocity(90,40);
+        blocks.get(1).setVelocity(30,108);
 
     }
     public void update(float delta){
@@ -41,6 +41,11 @@ public class BlockManager {
         return false;
 
 
+    }
+    public void stop(){
+        for(Block block:blocks){
+            block.setVelocity(0,0);
+        }
     }
 
 }

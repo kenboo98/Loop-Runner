@@ -34,7 +34,7 @@ public class ButtonActor extends Actor {
         renderer.translate(getX(), getY(), 0);
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
-        renderer.setColor(getColor());
+        renderer.setColor(GameColors.mainColor2);
         renderer.circle(radius,radius,radius);
         renderer.end();
 

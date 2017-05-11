@@ -12,10 +12,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 
-public class MainGame extends Game {
+ public class MainGame extends Game {
 
 	private Screen currentScreen;
-	BitmapFont startFont;
 
 
 	OrthographicCamera camera;
@@ -23,6 +22,9 @@ public class MainGame extends Game {
 	public void create () {
 
 		//the main game screen
+
+		Gdx.app.log("HEIGHT: ", Float.toString(Gdx.graphics.getHeight()));
+		Gdx.app.log("width: ", Float.toString(Gdx.graphics.getWidth()));
 		currentScreen = new StartScreen(this);
 		setScreen(currentScreen);
 
@@ -32,7 +34,7 @@ public class MainGame extends Game {
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(1, 1, 1, 1);
+		Gdx.gl.glClearColor(GameColors.mainColor1.r, GameColors.mainColor1.g, GameColors.mainColor1.b, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		currentScreen.render(Gdx.graphics.getDeltaTime());
 

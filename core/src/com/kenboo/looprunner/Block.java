@@ -29,7 +29,7 @@ public class Block {
 
     public void draw(ShapeRenderer renderer){
         ///renderer.begin() should already have been called
-        renderer.setColor(color);
+        renderer.setColor(GameColors.mainColor2);
         renderer.rect(rectangle.getX(),rectangle.getY(),rectangle.getWidth(),rectangle.getHeight());
         //renderer end will be called later
     }

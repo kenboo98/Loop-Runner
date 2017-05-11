@@ -1,7 +1,6 @@
 package com.kenboo.looprunner;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Circle;
@@ -12,35 +11,42 @@ import com.badlogic.gdx.math.Circle;
 
 public class PlayerBall {
     //radius of the player ball. RADIUS is the radius of the circle
-    final static float RADIUS = GameScreen.WIDTH*0.1f/2;
+    float RADIUS = Gdx.graphics.getWidth() *0.1f/2;
     //starting x and y position
-    float x = GameScreen.CIRCLE_RADIUS + RADIUS;
-    float y = 0;
+    float x;
+    float y;
 
     //angle theta in radians
     float angle;
 
     //delta angle is the rotational velocity. The inner velocity must be faster than the outer to make up for the smaller radius
-    final static float DELTAANGLEOUTER = 3.14f;
-    final static float DELTAANGLEINNER = DELTAANGLEOUTER*(GameScreen.CIRCLE_RADIUS+RADIUS)/(GameScreen.CIRCLE_RADIUS - RADIUS - GameScreen.THICKNESS);
+    float deltaangleouter = 3.14f;
+    float deltaangleinner;
     float deltaAngle = 3.14f;
 
-    float hypoteneuse = GameScreen.CIRCLE_RADIUS+RADIUS;
+    float hypoteneuse;
     //circle used for collision check with the squares
     private Circle circle;
     final static int CLOCKWISE = -1;
     final static int COUNTER_CLOCKWISE = 1;
     int direction = 1;
-    public PlayerBall(){
+
+    GameScreen screen;
+    public PlayerBall(GameScreen screen){
         //create a cir
         circle = new Circle(x,y,RADIUS);
-
+        this.screen = screen;
+        x = screen.circleRadius + RADIUS;
+        hypoteneuse = screen.circleRadius+RADIUS;
+        deltaangleinner = deltaangleouter *(screen.circleRadius+RADIUS)/(screen.circleRadius - RADIUS - screen.thickness);
     }
+
     public void draw(ShapeRenderer renderer){
-        renderer.setColor(Color.BLACK);
+        renderer.setColor(GameColors.mainColor2);
         renderer.circle(x,y,RADIUS);
 
     }
+
     public void update(float delta){
         //move along circle
         angle += deltaAngle * delta;
@@ -55,26 +61,30 @@ public class PlayerBall {
     }
     public void switchSide(){
         //when we switch sides, we change the length of the hypoteneuse and the rotational speed
-        if(hypoteneuse == GameScreen.CIRCLE_RADIUS+RADIUS){
-            hypoteneuse = GameScreen.CIRCLE_RADIUS - RADIUS - GameScreen.THICKNESS;
+        if(hypoteneuse == screen.circleRadius+RADIUS){
+            hypoteneuse = screen.circleRadius - RADIUS - screen.thickness;
             if(direction == COUNTER_CLOCKWISE){
-                deltaAngle = DELTAANGLEINNER;
+                deltaAngle = deltaangleinner;
             }else{
-                deltaAngle = -DELTAANGLEINNER;
+                deltaAngle = -deltaangleinner;
             }
 
         }else{
-            hypoteneuse = GameScreen.CIRCLE_RADIUS + RADIUS;
+            hypoteneuse = screen.circleRadius + RADIUS;
             if(direction == COUNTER_CLOCKWISE){
-                deltaAngle = DELTAANGLEOUTER;
+                deltaAngle = deltaangleouter;
             }else{
-                deltaAngle = -DELTAANGLEOUTER;
+                deltaAngle = -deltaangleouter;
             }
 
         }
     }
     public Circle getCircle(){
         return circle;
+    }
+    public void stop(){
+        //function to stop the ball when the game is done
+        deltaAngle = 0;
     }
 
 }

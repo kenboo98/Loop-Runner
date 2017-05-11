@@ -24,15 +24,15 @@ public class StartScreen implements Screen, InputProcessor {
     }
     @Override
     public void show() {
-        stage = new Stage(new FitViewport(1080,1920));
+        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
         startButton = new ButtonActor(Color.BLACK,300);
         Gdx.input.setInputProcessor(stage);
-        startButton.setPosition(stage.getWidth()/2,stage.getHeight()/2);
+        startButton.setPosition(stage.getWidth()/2-startButton.getWidth()/2,stage.getHeight()/2-startButton.getWidth()/2);
         startButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("Clicked","Worked");
-                mainGame.changeScreen(new GameScreen());
+                mainGame.changeScreen(new GameScreen(mainGame));
                 return false;
             }
         });

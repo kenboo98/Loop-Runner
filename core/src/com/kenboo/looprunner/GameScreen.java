@@ -12,19 +12,20 @@ import com.badlogic.gdx.math.*;
  */
 
 public class GameScreen implements Screen, InputProcessor{
-    //width of the area
-    static final int WIDTH = 1000;
-    static final float CIRCLE_RADIUS = WIDTH*0.75f/2;
+    //base the radius of the circle on the width. The height will always be higher than the width.
+    float width;
+    float circleRadius;
     //thickness of the circle
-    static final float THICKNESS = CIRCLE_RADIUS *0.1f;
+    float thickness = circleRadius *0.1f;
 
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
     //view port width. A window to the game world.
     // The viewport height will be calculated from the ratio of the actual game window/phone screen
     //ratio
-    private float viewPortWidth = 1080;
 
+    //instance of main game
+    private MainGame mainGame;
 
     private BackgroundCircle circle;
     private PlayerBall playerBall;
@@ -34,16 +35,23 @@ public class GameScreen implements Screen, InputProcessor{
     //touch vector
     private Vector3 touchVect;
 
+    boolean gameOver = false;
 
-    public GameScreen(){
+
+    public GameScreen(MainGame mainGame){
         shapeRenderer = new ShapeRenderer();
         //setup camera for the gameScreen
-        camera = new OrthographicCamera(viewPortWidth, viewPortWidth * Gdx.graphics.getHeight()/Gdx.graphics.getWidth());
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        width = Gdx.graphics.getWidth();
+        circleRadius = width *0.75f/2;
+        thickness = circleRadius *0.1f;
 
-        circle = new BackgroundCircle(THICKNESS);
-        playerBall = new PlayerBall();
+        circle = new BackgroundCircle(this, thickness);
+        playerBall = new PlayerBall(this);
         blockManger = new BlockManager();
         touchVect = new Vector3();
+
+        this.mainGame = mainGame;
 
     }
     @Override
@@ -59,7 +67,13 @@ public class GameScreen implements Screen, InputProcessor{
         blockManger.update(Gdx.graphics.getDeltaTime());
         //check collision
         if(blockManger.checkCollision(playerBall)){
-            Gdx.app.exit();
+            if(!gameOver) {
+                GameColors.invertMainColors();
+                blockManger.stop();
+                playerBall.stop();
+                gameOver = true;
+            }
+
         }
         //setup shape renderer
         shapeRenderer.setProjectionMatrix(camera.combined);
@@ -75,8 +89,8 @@ public class GameScreen implements Screen, InputProcessor{
     @Override
     public void resize(int width, int height) {
         //calculate the viewport height from the height, width ratio. This scales everything well
-        camera.viewportWidth = viewPortWidth;
-        camera.viewportHeight = viewPortWidth * height/width;
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
         camera.update();
     }
 
@@ -120,7 +134,7 @@ public class GameScreen implements Screen, InputProcessor{
         touchVect = camera.unproject(touchVect.set(screenX,screenY,0));
         //if the vector from the center to the touch coordinate is smaller than the radius,
         //then it means that the touch is inside the circle. Then, switch sides of the ball
-        if(touchVect.len()<CIRCLE_RADIUS){
+        if(touchVect.len()<circleRadius){
             playerBall.switchSide();
         }else{
             playerBall.switchDirection();
