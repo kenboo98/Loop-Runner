@@ -11,12 +11,12 @@ import com.badlogic.gdx.math.*;
  * Created by kenbo on 2017-05-06.
  */
 
-public class GameScreen implements Screen, InputProcessor{
+public class GameScreen implements Screen, InputProcessor {
     //base the radius of the circle on the width. The height will always be higher than the width.
     float width;
     float circleRadius;
     //thickness of the circle
-    float thickness = circleRadius *0.1f;
+    float thickness = circleRadius * 0.1f;
 
     private ShapeRenderer shapeRenderer;
     private OrthographicCamera camera;
@@ -38,36 +38,36 @@ public class GameScreen implements Screen, InputProcessor{
     boolean gameOver = false;
 
 
-    public GameScreen(MainGame mainGame){
+    public GameScreen(MainGame mainGame) {
         shapeRenderer = new ShapeRenderer();
         //setup camera for the gameScreen
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(),Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
         width = Gdx.graphics.getWidth();
-        circleRadius = width *0.75f/2;
-        thickness = circleRadius *0.1f;
+        circleRadius = width * 0.75f / 2;
+        thickness = circleRadius * 0.1f;
 
-        circle = new BackgroundCircle(this, thickness);
-        playerBall = new PlayerBall(this);
-        blockManger = new BlockManager();
+        circle = new BackgroundCircle(circleRadius, thickness);
+        playerBall = new PlayerBall(circleRadius, width * 0.05f, thickness);
+
         touchVect = new Vector3();
-
+        blockManger = new BlockManager(1);
         this.mainGame = mainGame;
 
     }
+
     @Override
     public void show() {
         Gdx.input.setInputProcessor(this);
 
     }
-
     @Override
     public void render(float delta) {
         //update
         playerBall.update(Gdx.graphics.getDeltaTime());
         blockManger.update(Gdx.graphics.getDeltaTime());
         //check collision
-        if(blockManger.checkCollision(playerBall)){
-            if(!gameOver) {
+        if (blockManger.checkCollision(playerBall)) {
+            if (!gameOver) {
                 GameColors.invertMainColors();
                 blockManger.stop();
                 playerBall.stop();
@@ -131,12 +131,12 @@ public class GameScreen implements Screen, InputProcessor{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        touchVect = camera.unproject(touchVect.set(screenX,screenY,0));
+        touchVect = camera.unproject(touchVect.set(screenX, screenY, 0));
         //if the vector from the center to the touch coordinate is smaller than the radius,
         //then it means that the touch is inside the circle. Then, switch sides of the ball
-        if(touchVect.len()<circleRadius){
+        if (touchVect.len() < circleRadius) {
             playerBall.switchSide();
-        }else{
+        } else {
             playerBall.switchDirection();
         }
 

@@ -1,8 +1,12 @@
 package com.kenboo.looprunner;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.utils.Json;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 
 import java.util.ArrayList;
 
@@ -13,12 +17,31 @@ import java.util.ArrayList;
 public class BlockManager {
     ArrayList<Block> blocks;
 
-    public BlockManager(){
+    //use json to store all the level data
+    JsonValue jsonFile;
+    JsonValue blockss;
+    JsonValue.JsonIterator jsonBlocks;
+    Json json;
+
+    public BlockManager(int level){
+        //set up each block in the game through a json file
         blocks = new ArrayList<Block>();
-        blocks.add(new Block(-400,100, 50,300));
-        blocks.add(new Block(0, -600, 300,50));
-        blocks.get(0).setVelocity(90,40);
-        blocks.get(1).setVelocity(30,108);
+        jsonFile = new JsonReader().parse(Gdx.files.internal("level"+Integer.toString(level))+".json");
+        blockss  = jsonFile.get("blocks");
+
+        jsonBlocks = blockss.iterator();
+       /* for(JsonValue block: jsonBlocks){
+            //add the block to an array
+            Gdx.app.log("Blocks:","ADDED");
+            blocks.add(new Block(block.get("x").asFloat(),block.get("y").asFloat(),block.get("width").asFloat(),block.get("height").asFloat()));
+            blocks.get(blocks.size()-1).setVelocity(block.get("deltaX").asFloat(),block.get("deltaY").asFloat());
+
+        }*/
+
+
+
+
+
 
     }
     public void update(float delta){

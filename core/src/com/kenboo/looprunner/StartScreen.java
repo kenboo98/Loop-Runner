@@ -4,9 +4,11 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.InputListener;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -14,6 +16,10 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
  */
 
 public class StartScreen implements Screen, InputProcessor {
+
+
+
+
     MainGame mainGame;
     Stage stage;
     //test start button
@@ -25,18 +31,23 @@ public class StartScreen implements Screen, InputProcessor {
     @Override
     public void show() {
         stage = new Stage(new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
-        startButton = new ButtonActor(Color.BLACK,300);
         Gdx.input.setInputProcessor(stage);
+        //button actor is a class
+        startButton = new ButtonActor(Color.BLACK,Gdx.graphics.getWidth() * 0.6f/2);
         startButton.setPosition(stage.getWidth()/2-startButton.getWidth()/2,stage.getHeight()/2-startButton.getWidth()/2);
         startButton.addListener(new InputListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("Clicked","Worked");
-                mainGame.changeScreen(new GameScreen(mainGame));
+                //the action sequence is the animation action and then the change of screens action
+                startButton.addAction(Actions.sequence(Actions.moveTo(startButton.getX(), stage.getHeight() + startButton.getHeight(),1),new GameScreenAction(mainGame)));
+
+                //mainGame.changeScreen(new GameScreen(mainGame));
                 return false;
             }
         });
         stage.addActor(startButton);
+
+
 
 
 
@@ -69,6 +80,7 @@ public class StartScreen implements Screen, InputProcessor {
     public void hide() {
 
     }
+
 
     @Override
     public void dispose() {
@@ -112,5 +124,21 @@ public class StartScreen implements Screen, InputProcessor {
     @Override
     public boolean scrolled(int amount) {
         return false;
+    }
+}
+class GameScreenAction extends Action{
+    //this is the action we must put at the end of the animation action sequence for the buttons
+    MainGame mainGame;
+
+    public GameScreenAction(MainGame mainGame){
+        super();
+        this.mainGame = mainGame;
+
+    }
+
+    @Override
+    public boolean act(float delta) {
+        mainGame.changeScreen(new GameScreen(mainGame));
+        return true;
     }
 }

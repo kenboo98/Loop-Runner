@@ -11,7 +11,10 @@ import com.badlogic.gdx.math.Circle;
 
 public class PlayerBall {
     //radius of the player ball. RADIUS is the radius of the circle
-    float RADIUS = Gdx.graphics.getWidth() *0.1f/2;
+    float radius;
+    float backgroundCircleRadius;
+    //thickness of the background circle
+    float thickness;
     //starting x and y position
     float x;
     float y;
@@ -31,19 +34,20 @@ public class PlayerBall {
     final static int COUNTER_CLOCKWISE = 1;
     int direction = 1;
 
-    GameScreen screen;
-    public PlayerBall(GameScreen screen){
+    public PlayerBall(float backgroundCircleRadius, float playerRadius, float thickness){
+        this.backgroundCircleRadius = backgroundCircleRadius;
+        this.radius = playerRadius;
+        this.thickness = thickness;
         //create a cir
-        circle = new Circle(x,y,RADIUS);
-        this.screen = screen;
-        x = screen.circleRadius + RADIUS;
-        hypoteneuse = screen.circleRadius+RADIUS;
-        deltaangleinner = deltaangleouter *(screen.circleRadius+RADIUS)/(screen.circleRadius - RADIUS - screen.thickness);
+        circle = new Circle(x,y,radius);
+        x = backgroundCircleRadius + radius;
+        hypoteneuse = backgroundCircleRadius+radius;
+        deltaangleinner = deltaangleouter *(backgroundCircleRadius)/(backgroundCircleRadius - radius - thickness);
     }
 
     public void draw(ShapeRenderer renderer){
         renderer.setColor(GameColors.mainColor2);
-        renderer.circle(x,y,RADIUS);
+        renderer.circle(x,y,radius);
 
     }
 
@@ -61,8 +65,8 @@ public class PlayerBall {
     }
     public void switchSide(){
         //when we switch sides, we change the length of the hypoteneuse and the rotational speed
-        if(hypoteneuse == screen.circleRadius+RADIUS){
-            hypoteneuse = screen.circleRadius - RADIUS - screen.thickness;
+        if(hypoteneuse == backgroundCircleRadius+radius){
+            hypoteneuse = backgroundCircleRadius - radius - thickness;
             if(direction == COUNTER_CLOCKWISE){
                 deltaAngle = deltaangleinner;
             }else{
@@ -70,7 +74,7 @@ public class PlayerBall {
             }
 
         }else{
-            hypoteneuse = screen.circleRadius + RADIUS;
+            hypoteneuse = backgroundCircleRadius + radius;
             if(direction == COUNTER_CLOCKWISE){
                 deltaAngle = deltaangleouter;
             }else{
