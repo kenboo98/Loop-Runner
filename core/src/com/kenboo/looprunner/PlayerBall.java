@@ -1,15 +1,17 @@
 package com.kenboo.looprunner;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
  * Created by kenbo on 2017-05-06.
  */
 
-public class PlayerBall {
+public class PlayerBall extends Actor {
     //radius of the player ball. RADIUS is the radius of the circle
     float radius;
     float backgroundCircleRadius;
@@ -34,7 +36,9 @@ public class PlayerBall {
     final static int COUNTER_CLOCKWISE = 1;
     int direction = 1;
 
-    public PlayerBall(float backgroundCircleRadius, float playerRadius, float thickness){
+    GameScreen screen;
+
+    public PlayerBall(GameScreen screen,float backgroundCircleRadius, float playerRadius, float thickness){
         this.backgroundCircleRadius = backgroundCircleRadius;
         this.radius = playerRadius;
         this.thickness = thickness;
@@ -43,15 +47,16 @@ public class PlayerBall {
         x = backgroundCircleRadius + radius;
         hypoteneuse = backgroundCircleRadius+radius;
         deltaangleinner = deltaangleouter *(backgroundCircleRadius)/(backgroundCircleRadius - radius - thickness);
+        this.screen = screen;
     }
 
-    public void draw(ShapeRenderer renderer){
-        renderer.setColor(GameColors.mainColor2);
-        renderer.circle(x,y,radius);
+    public void draw(Batch batch, float parentAlpha){
+        screen.getShapeRenderer().setColor(GameColors.mainColor2);
+        screen.getShapeRenderer().circle(x,y,radius);
 
     }
 
-    public void update(float delta){
+    public void act(float delta){
         //move along circle
         angle += deltaAngle * delta;
         x = MathUtils.cos(angle)*(hypoteneuse);

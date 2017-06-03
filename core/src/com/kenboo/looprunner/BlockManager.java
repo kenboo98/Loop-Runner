@@ -1,9 +1,14 @@
 package com.kenboo.looprunner;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.badlogic.gdx.scenes.scene2d.Group;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveToAction;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -12,52 +17,36 @@ import java.util.ArrayList;
 
 /**
  * Created by kenbo on 2017-05-08.
+ * A class to read and create all the blocks from a json file.
+ * Also handles the collisions and draws the blocks.
  */
 
-public class BlockManager {
-    ArrayList<Block> blocks;
+public class BlockManager extends Group{
+
+    GameScreen screen;
 
     //use json to store all the level data
     JsonValue jsonFile;
-    JsonValue blockss;
+
     JsonValue.JsonIterator jsonBlocks;
     Json json;
 
-    public BlockManager(int level){
+    public BlockManager(GameScreen screen){
         //set up each block in the game through a json file
-        blocks = new ArrayList<Block>();
-        jsonFile = new JsonReader().parse(Gdx.files.internal("level"+Integer.toString(level))+".json");
-        blockss  = jsonFile.get("blocks");
 
-        jsonBlocks = blockss.iterator();
-       /* for(JsonValue block: jsonBlocks){
-            //add the block to an array
-            Gdx.app.log("Blocks:","ADDED");
-            blocks.add(new Block(block.get("x").asFloat(),block.get("y").asFloat(),block.get("width").asFloat(),block.get("height").asFloat()));
-            blocks.get(blocks.size()-1).setVelocity(block.get("deltaX").asFloat(),block.get("deltaY").asFloat());
-
-        }*/
-
-
-
-
-
+        this.screen = screen;
 
     }
-    public void update(float delta){
-        for(Block block:blocks){
-            block.update(delta);
+    @Override
+    public void act(float delta){
+        for(Actor block:this.getChildren()){
+            block.act(delta);
         }
     }
-    public void draw(ShapeRenderer renderer){
-        ///renderer.begin() should've already been called
-        for(Block block:blocks){
-            block.draw(renderer);
-        }
-    }
+
     public boolean checkCollision(PlayerBall ball){
-        for(Block block:blocks){
-            if(Intersector.overlaps(ball.getCircle(), block.getRectangle())){
+        for(Actor block:this.getChildren()){
+            if(Intersector.overlaps(ball.getCircle(), ((Block)block).getRectangle())){
                 return true;
             }
         }
@@ -66,9 +55,20 @@ public class BlockManager {
 
     }
     public void stop(){
-        for(Block block:blocks){
-            block.setVelocity(0,0);
+        //stops all the actions
+        for(Actor block:this.getChildren()){
+            block.clearActions();
         }
     }
+    public boolean actionsCompleted(){
+        //if there are actions left in any of the child actors, return false
+         for(Actor block:this.getChildren()){
+             if(block.hasActions()){
+                 return false;
+             }
+         }return true;
+    }
+
+
 
 }

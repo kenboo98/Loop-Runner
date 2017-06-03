@@ -30,10 +30,12 @@ public class StartScreen implements Screen, InputProcessor {
     }
     @Override
     public void show() {
-        stage = new Stage(new FitViewport(Gdx.graphics.getWidth(),Gdx.graphics.getHeight()));
+        stage = new Stage(new FitViewport(1080,1920));
         Gdx.input.setInputProcessor(stage);
         //button actor is a class
-        startButton = new ButtonActor(Color.BLACK,Gdx.graphics.getWidth() * 0.6f/2);
+        startButton = new ButtonActor(Color.BLACK,stage.getWidth() * 0.6f/2);
+        System.out.println(stage.getWidth());
+        System.out.println(stage.getHeight());
         startButton.setPosition(stage.getWidth()/2-startButton.getWidth()/2,stage.getHeight()/2-startButton.getWidth()/2);
         startButton.addListener(new InputListener(){
             @Override
@@ -63,7 +65,7 @@ public class StartScreen implements Screen, InputProcessor {
 
     @Override
     public void resize(int width, int height) {
-
+        stage.getViewport().update(width, height, false);
     }
 
     @Override
