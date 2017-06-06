@@ -7,7 +7,7 @@ import com.badlogic.gdx.graphics.Color;
  */
 
 public class GameColors {
-    //a global color controller. This way we can easily change all the colors depending on the level, game status etc
+    //a global color controller. This way we can easily change all the colors depending on the levelText, game status etc
     //Color of most blocks, player etc
     public static Color mainColor1 = Color.WHITE;
     //color of background
@@ -24,4 +24,5 @@ public class GameColors {
         mainColor1 = mainColor2;
         mainColor2 = temp;
     }
+
 }

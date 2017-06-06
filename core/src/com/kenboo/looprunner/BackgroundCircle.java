@@ -19,21 +19,29 @@ public class BackgroundCircle extends Actor {
     //radius of outer loop
     float radius;
     GameScreen screen;
+    ShapeRenderer renderer;
 
 
-    public BackgroundCircle(GameScreen screen,float radius, float thickness){
+
+    public BackgroundCircle(ShapeRenderer renderer,float radius, float thickness){
         this.thickness = thickness;
         this.radius = radius;
         //current screen
         this.screen = screen;
+        this.setWidth(radius);
+        this.setHeight(radius);
+        this.renderer = renderer;
+
     }
     public void draw(Batch batch, float parentAlpha){
+        super.draw(batch,parentAlpha);
+        System.out.println(getScaleX());
         //shape renderer should be sent in after begin() was already called
         //outside circle
-        screen.getShapeRenderer().setColor(GameColors.mainColor2);
-        screen.getShapeRenderer().circle(0, 0, radius);
+        renderer.setColor(GameColors.mainColor2);
+        renderer.circle(0, 0, getWidth()*getScaleX());
         //inside circle
-        screen.getShapeRenderer().setColor(GameColors.mainColor1);
-        screen.getShapeRenderer().circle(0,0,radius-thickness);
+        renderer.setColor(GameColors.mainColor1);
+        renderer.circle(0,0,getWidth()*getScaleX() - thickness);
     }
 }

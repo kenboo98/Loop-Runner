@@ -15,16 +15,17 @@ public class Block extends Actor{
     private GameScreen screen;
     private float deltaX;
     private float deltaY;
+    ShapeRenderer renderer;
 
 
 
 
-    public Block(GameScreen screen, float x, float y,float width, float height){
+    public Block(ShapeRenderer renderer, float x, float y,float width, float height){
         this.setHeight(height);
         this.setWidth(width);
         this.setPosition(x,y);
         rectangle = new Rectangle(x,y,width,height);
-        this.screen = screen;
+        this.renderer = renderer;
     }
 
     public void act(float delta){
@@ -34,8 +35,8 @@ public class Block extends Actor{
 
     public void draw(Batch batch,float parentAlpha){
         ///renderer.begin() should already have been called
-        screen.getShapeRenderer().setColor(GameColors.mainColor2);
-        screen.getShapeRenderer().rect(getX(),getY(),rectangle.getWidth(),rectangle.getHeight());
+        renderer.setColor(GameColors.mainColor2);
+        renderer.rect(getX(),getY(),rectangle.getWidth(),rectangle.getHeight());
         //renderer end will be called later
     }
     public Rectangle getRectangle(){

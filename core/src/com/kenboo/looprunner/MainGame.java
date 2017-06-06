@@ -22,7 +22,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 	public void create () {
 
 		//the main game screen
-
+		Assets.load();
 		Gdx.app.log("HEIGHT: ", Float.toString(Gdx.graphics.getHeight()));
 		Gdx.app.log("width: ", Float.toString(Gdx.graphics.getWidth()));
 		currentScreen = new StartScreen(this);

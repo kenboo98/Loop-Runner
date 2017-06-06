@@ -25,16 +25,16 @@ public class BlockManager extends Group{
 
     GameScreen screen;
 
-    //use json to store all the level data
+    //use json to store all the levelText data
     JsonValue jsonFile;
 
     JsonValue.JsonIterator jsonBlocks;
     Json json;
-
-    public BlockManager(GameScreen screen){
+    ShapeRenderer renderer;
+    public BlockManager(ShapeRenderer renderer){
         //set up each block in the game through a json file
 
-        this.screen = screen;
+        this.renderer = renderer;
 
     }
     @Override

@@ -36,9 +36,9 @@ public class PlayerBall extends Actor {
     final static int COUNTER_CLOCKWISE = 1;
     int direction = 1;
 
-    GameScreen screen;
+    ShapeRenderer renderer;
 
-    public PlayerBall(GameScreen screen,float backgroundCircleRadius, float playerRadius, float thickness){
+    public PlayerBall(ShapeRenderer renderer,float backgroundCircleRadius, float playerRadius, float thickness){
         this.backgroundCircleRadius = backgroundCircleRadius;
         this.radius = playerRadius;
         this.thickness = thickness;
@@ -47,12 +47,12 @@ public class PlayerBall extends Actor {
         x = backgroundCircleRadius + radius;
         hypoteneuse = backgroundCircleRadius+radius;
         deltaangleinner = deltaangleouter *(backgroundCircleRadius)/(backgroundCircleRadius - radius - thickness);
-        this.screen = screen;
+        this.renderer = renderer;
     }
 
     public void draw(Batch batch, float parentAlpha){
-        screen.getShapeRenderer().setColor(GameColors.mainColor2);
-        screen.getShapeRenderer().circle(x,y,radius);
+        renderer.setColor(GameColors.mainColor2);
+        renderer.circle(x,y,radius);
 
     }
 

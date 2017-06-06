@@ -6,7 +6,9 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 
 /**
@@ -40,25 +42,25 @@ public class GameScreen implements Screen, InputProcessor {
     boolean gameOver = false;
 
 
-    public GameScreen(MainGame mainGame) {
+    public GameScreen(MainGame mainGame, int level) {
         stage = new Stage(new FitViewport(1080, 1920));
         stage.getViewport().getCamera().position.set(0,0,0);
         Gdx.input.setInputProcessor(stage);
         width = stage.getWidth();
         circleRadius = width * 0.75f / 2;
         thickness = circleRadius * 0.1f;
-
-        circle = new BackgroundCircle(this, circleRadius, thickness);
-        playerBall = new PlayerBall(this, circleRadius, width * 0.05f, thickness);
+        //this shape renderer will be used by all the actors
+        shapeRenderer = new ShapeRenderer();
+        circle = new BackgroundCircle(shapeRenderer, circleRadius, thickness);
+        playerBall = new PlayerBall(shapeRenderer, circleRadius, width * 0.05f, thickness);
         stage.addActor(circle);
         stage.addActor(playerBall);
         touchVect = new Vector3();
-        blockManger = LoadLevels.getLevel1(this);
+        blockManger = LoadLevels.getLevel(level, shapeRenderer);
         stage.addActor(blockManger);
         this.mainGame = mainGame;
 
-        //this shape renderer will be used by all the actors
-        shapeRenderer = new ShapeRenderer();
+
 
     }
 
@@ -72,8 +74,7 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public void render(float delta) {
         //update
-        playerBall.act(Gdx.graphics.getDeltaTime());
-        blockManger.act(Gdx.graphics.getDeltaTime());
+        stage.act(delta);
         //collision event
         if (blockManger.checkCollision(playerBall)) {
             if (!gameOver) {
@@ -85,8 +86,11 @@ public class GameScreen implements Screen, InputProcessor {
             }
 
         }
-        if(blockManger.actionsCompleted()){
-            mainGame.changeScreen(new StartScreen(mainGame));
+        if(blockManger.actionsCompleted() && !gameOver){
+            gameOver = true;
+            System.out.println("Added");
+            circle.addAction(Actions.sequence(Actions.scaleTo(3,3,3),new StartScreenAction(mainGame)));
+            System.out.println(circle.getScaleX());
         }
 
         //setup shape renderer
@@ -177,6 +181,22 @@ public class GameScreen implements Screen, InputProcessor {
 
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
+    }
+}
+class StartScreenAction extends Action {
+    //this is the action we must put at the end of the animation action sequence for the buttons
+    MainGame mainGame;
+
+    public StartScreenAction(MainGame mainGame){
+        super();
+        this.mainGame = mainGame;
+
+    }
+
+    @Override
+    public boolean act(float delta) {
+        mainGame.changeScreen(new StartScreen(mainGame));
+        return true;
     }
 }
 
