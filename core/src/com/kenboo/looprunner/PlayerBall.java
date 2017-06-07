@@ -25,9 +25,11 @@ public class PlayerBall extends Actor {
     float angle;
 
     //delta angle is the rotational velocity. The inner velocity must be faster than the outer to make up for the smaller radius
-    float deltaangleouter = 3.14f;
+    //These two values are calculted at the start
+    float deltaangleouter = 2.8f;
     float deltaangleinner;
-    float deltaAngle = 3.14f;
+    //current speed of the rotation.
+    float deltaAngle = deltaangleouter;
 
     float hypoteneuse;
     //circle used for collision check with the squares

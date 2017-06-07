@@ -12,10 +12,12 @@ public class Assets {
     public static BitmapFont font64;
     public static BitmapFont font256;
     public static BitmapFont font128;
+    public static BitmapFont font96;
 
     public static void load(){
         font64 = new BitmapFont(Gdx.files.internal("font64.fnt"));
         font256 = new BitmapFont(Gdx.files.internal("font256.fnt"));
-        font128 = new BitmapFont(Gdx.files.internal("fon128.fnt"));
+        font128 = new BitmapFont(Gdx.files.internal("font128.fnt"));
+        font96 = new BitmapFont(Gdx.files.internal("font96.fnt"));
     }
 }

@@ -1,3 +1,4 @@
+
 package com.kenboo.looprunner;
 
 import com.badlogic.gdx.ApplicationAdapter;
@@ -7,11 +8,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 
+//This is the main class controlling all the different scenes
  public class MainGame extends Game {
 
 	private Screen currentScreen;

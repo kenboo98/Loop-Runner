@@ -3,7 +3,6 @@ package com.kenboo.looprunner;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.scenes.scene2d.Action;
@@ -38,13 +37,15 @@ public class GameScreen implements Screen, InputProcessor {
 
     //touch vector
     private Vector3 touchVect;
-
+    //use this boolean values so the events when the game is over is only called once
     boolean gameOver = false;
+    int level;
 
 
     public GameScreen(MainGame mainGame, int level) {
+        this.level = level;
         stage = new Stage(new FitViewport(1080, 1920));
-        stage.getViewport().getCamera().position.set(0,0,0);
+        stage.getViewport().getCamera().position.set(0, 0, 0);
         Gdx.input.setInputProcessor(stage);
         width = stage.getWidth();
         circleRadius = width * 0.75f / 2;
@@ -61,7 +62,6 @@ public class GameScreen implements Screen, InputProcessor {
         this.mainGame = mainGame;
 
 
-
     }
 
     @Override
@@ -75,21 +75,25 @@ public class GameScreen implements Screen, InputProcessor {
     public void render(float delta) {
         //update
         stage.act(delta);
-        //collision event
+        //collision event. Go to game over screen
         if (blockManger.checkCollision(playerBall)) {
+            //when user collides
             if (!gameOver) {
                 GameColors.invertMainColors();
 
                 playerBall.stop();
                 blockManger.stop();
+                circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f), new GameOverScreenAction(mainGame,GameOverScreen.FAIL)));
                 gameOver = true;
             }
 
         }
-        if(blockManger.actionsCompleted() && !gameOver){
+        if (blockManger.actionsCompleted() && !gameOver) {
+            //when the level is completed
             gameOver = true;
             System.out.println("Added");
-            circle.addAction(Actions.sequence(Actions.scaleTo(3,3,3),new StartScreenAction(mainGame)));
+            //this animate the circle and then change screens
+            circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f), new GameOverScreenAction(mainGame,GameOverScreen.SUCCESS)));
             System.out.println(circle.getScaleX());
         }
 
@@ -182,21 +186,25 @@ public class GameScreen implements Screen, InputProcessor {
     public ShapeRenderer getShapeRenderer() {
         return shapeRenderer;
     }
-}
-class StartScreenAction extends Action {
-    //this is the action we must put at the end of the animation action sequence for the buttons
-    MainGame mainGame;
 
-    public StartScreenAction(MainGame mainGame){
-        super();
-        this.mainGame = mainGame;
+    class GameOverScreenAction extends Action {
+        //this is the action we can put at the end of the animation action sequence for the buttons to change screens
+        MainGame mainGame;
+        int flag;
 
-    }
+        public GameOverScreenAction(MainGame mainGame, int flag) {
+            super();
+            this.mainGame = mainGame;
+            this.flag = flag;
 
-    @Override
-    public boolean act(float delta) {
-        mainGame.changeScreen(new StartScreen(mainGame));
-        return true;
+        }
+
+        @Override
+        public boolean act(float delta) {
+            GameColors.resetColors();
+            mainGame.changeScreen(new GameOverScreen(mainGame,flag, level));
+            return true;
+        }
     }
 }
 
