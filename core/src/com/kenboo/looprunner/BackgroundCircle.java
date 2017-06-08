@@ -34,14 +34,21 @@ public class BackgroundCircle extends Actor {
 
     }
     public void draw(Batch batch, float parentAlpha){
-        super.draw(batch,parentAlpha);
-        System.out.println(getScaleX());
-        //shape renderer should be sent in after begin() was already called
-        //outside circle
+        batch.end();
+        //set up renderer
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        renderer.setTransformMatrix(batch.getTransformMatrix());
+        renderer.scale(getScaleX(),getScaleY(),0);
+        renderer.translate(getX(), getY(), 0);
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        //draw circles
         renderer.setColor(GameColors.mainColor2);
-        renderer.circle(0, 0, getWidth()*getScaleX());
+        renderer.circle(0, 0, getWidth());
         //inside circle
         renderer.setColor(GameColors.mainColor1);
-        renderer.circle(0,0,getWidth()*getScaleX() - thickness);
+        renderer.circle(0,0,getWidth() - thickness);
+
+        renderer.end();
+        batch.begin();
     }
 }

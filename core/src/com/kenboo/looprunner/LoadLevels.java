@@ -3,6 +3,7 @@ package com.kenboo.looprunner;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
+import com.badlogic.gdx.scenes.scene2d.actions.ParallelAction;
 
 /**
  * Created by kenbo on 2017-06-02.
@@ -10,14 +11,15 @@ import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 
 public class LoadLevels {
     //number of levels in the game
-    final static int N_LEVELS = 2;
+    final static int N_LEVELS = 3;
     public static BlockManager getLevel(int level, ShapeRenderer renderer){
         switch (level){
             case 1:
                 return getLevel1(renderer);
-
-            default:
+            case 2:
                 return getLevel2(renderer);
+            default:
+                return getLevel3(renderer);
         }
     }
     public static BlockManager getLevel1(ShapeRenderer renderer){
@@ -37,6 +39,14 @@ public class LoadLevels {
         Actor currentActor;
         currentActor = new Block(renderer, 0,-1000,400,400);
         currentActor.addAction(Actions.moveTo(0,1000,10));
+        bm.addActor(currentActor);
+        return bm;
+    }
+    public  static BlockManager getLevel3(ShapeRenderer renderer){
+        BlockManager bm = new BlockManager(renderer);
+        Actor currentActor;
+        currentActor = new Block(renderer,0,-1000,400,400);
+        currentActor.addAction(new ParallelAction(Actions.moveTo(0,1000,10),Actions.rotateBy(100,10)));
         bm.addActor(currentActor);
         return bm;
     }

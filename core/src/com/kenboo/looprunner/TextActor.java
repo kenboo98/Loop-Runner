@@ -31,7 +31,7 @@ public class TextActor extends Actor {
         font.draw(batch,text,getX()-glyphLayout.width/2, getY()+glyphLayout.height/2);
     }
     public void setLevelText(int level){
-        this.text = "LEVEL "+Integer.toString(level);
+        this.text = "LEVEL:"+Integer.toString(level);
     }
 
 }

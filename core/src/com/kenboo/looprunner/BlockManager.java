@@ -45,11 +45,7 @@ public class BlockManager extends Group{
     }
 
     public boolean checkCollision(PlayerBall ball){
-        for(Actor block:this.getChildren()){
-            if(Intersector.overlaps(ball.getCircle(), ((Block)block).getRectangle())){
-                return true;
-            }
-        }
+
         return false;
 
 
@@ -68,6 +64,7 @@ public class BlockManager extends Group{
              }
          }return true;
     }
+
 
 
 

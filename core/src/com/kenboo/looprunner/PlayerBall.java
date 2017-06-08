@@ -17,9 +17,6 @@ public class PlayerBall extends Actor {
     float backgroundCircleRadius;
     //thickness of the background circle
     float thickness;
-    //starting x and y position
-    float x;
-    float y;
 
     //angle theta in radians
     float angle;
@@ -33,11 +30,12 @@ public class PlayerBall extends Actor {
 
     float hypoteneuse;
     //circle used for collision check with the squares
-    private Circle circle;
+
     final static int CLOCKWISE = -1;
     final static int COUNTER_CLOCKWISE = 1;
     int direction = 1;
-
+    //use this inner rectangle for collision detection
+    Circle circle;
     ShapeRenderer renderer;
 
     public PlayerBall(ShapeRenderer renderer,float backgroundCircleRadius, float playerRadius, float thickness){
@@ -45,26 +43,43 @@ public class PlayerBall extends Actor {
         this.radius = playerRadius;
         this.thickness = thickness;
         //create a cir
-        circle = new Circle(x,y,radius);
-        x = backgroundCircleRadius + radius;
+        setX(backgroundCircleRadius + radius);
+        circle = new Circle(getX(),getY(),radius);
         hypoteneuse = backgroundCircleRadius+radius;
         deltaangleinner = deltaangleouter *(backgroundCircleRadius)/(backgroundCircleRadius - radius - thickness);
         this.renderer = renderer;
+
+        //draw bounds
+        setDebug(true);
     }
 
     public void draw(Batch batch, float parentAlpha){
+        batch.end();
+        //set up renderer
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        renderer.setTransformMatrix(batch.getTransformMatrix());
+        renderer.translate(getX(), getY(), 0);
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+        //draw circle
         renderer.setColor(GameColors.mainColor2);
-        renderer.circle(x,y,radius);
+        renderer.circle(0,0,radius);
 
+
+        renderer.end();
+        batch.begin();
     }
 
     public void act(float delta){
+        super.act(delta);
         //move along circle
         angle += deltaAngle * delta;
-        x = MathUtils.cos(angle)*(hypoteneuse);
-        y = MathUtils.sin(angle) * (hypoteneuse);
-        //move the collision circle to current position
-        circle.setPosition(x,y);
+        setX(MathUtils.cos(angle)*(hypoteneuse));
+        setY(MathUtils.sin(angle) * (hypoteneuse));
+        //set the collision circle
+        circle.set(getX(),getY(),radius);
+
+
+
     }
     public void switchDirection(){
         deltaAngle = (-1)*deltaAngle;
@@ -90,9 +105,7 @@ public class PlayerBall extends Actor {
 
         }
     }
-    public Circle getCircle(){
-        return circle;
-    }
+
     public void stop(){
         //function to stop the ball when the game is done
         deltaAngle = 0;

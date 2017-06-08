@@ -3,6 +3,7 @@ package com.kenboo.looprunner;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
@@ -11,7 +12,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 
 public class Block extends Actor{
-    private Rectangle rectangle;
+    //use a polygon to calculate collisions
+    private Polygon polygon;
     private GameScreen screen;
     private float deltaX;
     private float deltaY;
@@ -20,27 +22,51 @@ public class Block extends Actor{
 
 
 
+
     public Block(ShapeRenderer renderer, float x, float y,float width, float height){
         this.setHeight(height);
         this.setWidth(width);
         this.setPosition(x,y);
-        rectangle = new Rectangle(x,y,width,height);
+        //set origin to the center for rotations
+        this.setOrigin(getWidth()/2,getHeight()/2);
+        //set the vertices of the polygon
+        float[] vertices = {0,0,0,getWidth(),getWidth(),getHeight(),0,getHeight()};
+        polygon = new Polygon(vertices);
         this.renderer = renderer;
+        setDebug(true);
     }
 
     public void act(float delta){
         super.act(delta);
-        rectangle.setPosition(getX(),getY());
+        polygon.setPosition(getX(),getY());
+        polygon.setOrigin(getOriginX(),getOriginY());
+        polygon.setRotation(getRotation());
+        polygon.setScale(getScaleX(),getScaleY());
     }
 
     public void draw(Batch batch,float parentAlpha){
-        ///renderer.begin() should already have been called
+        batch.end();
+        //set up renderer
+        renderer.setProjectionMatrix(batch.getProjectionMatrix());
+        renderer.setTransformMatrix(batch.getTransformMatrix());
+        //cet the origin of the renderer to the origin of the block so the block rotates around the origin
+        renderer.translate(getX()+getOriginX(), getY()+getOriginY(), 0);
+        //rotate according to actor rotation
+        renderer.rotate(0,0,1,getRotation());
+        //scale according to actor scale
+        renderer.scale(getScaleX(),getScaleY(),0);
+
+        renderer.begin(ShapeRenderer.ShapeType.Filled);
+
         renderer.setColor(GameColors.mainColor2);
-        renderer.rect(getX(),getY(),rectangle.getWidth(),rectangle.getHeight());
+
+        renderer.rect(-getOriginX(),-getOriginY(),getWidth(),getHeight());
         //renderer end will be called later
+        renderer.end();
+        batch.begin();
     }
-    public Rectangle getRectangle(){
-        return rectangle;
+    public Polygon getRectangle(){
+        return polygon;
     }
 
 

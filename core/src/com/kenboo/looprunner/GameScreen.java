@@ -45,15 +45,18 @@ public class GameScreen implements Screen, InputProcessor {
     public GameScreen(MainGame mainGame, int level) {
         this.level = level;
         stage = new Stage(new FitViewport(1080, 1920));
-        stage.getViewport().getCamera().position.set(0, 0, 0);
+        stage.getCamera().position.set(0,0,0);
         Gdx.input.setInputProcessor(stage);
+
         width = stage.getWidth();
         circleRadius = width * 0.75f / 2;
         thickness = circleRadius * 0.1f;
         //this shape renderer will be used by all the actors
         shapeRenderer = new ShapeRenderer();
         circle = new BackgroundCircle(shapeRenderer, circleRadius, thickness);
+
         playerBall = new PlayerBall(shapeRenderer, circleRadius, width * 0.05f, thickness);
+
         stage.addActor(circle);
         stage.addActor(playerBall);
         touchVect = new Vector3();
@@ -97,13 +100,10 @@ public class GameScreen implements Screen, InputProcessor {
             System.out.println(circle.getScaleX());
         }
 
-        //setup shape renderer
-        shapeRenderer.setProjectionMatrix(stage.getCamera().combined);
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+
         //draw
         stage.draw();
-        //end shape renderer
-        shapeRenderer.end();
+
 
     }
 
