@@ -4,11 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.*;
+import com.badlogic.gdx.math.Interpolation;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.kenboo.looprunner.Actors.BackgroundCircle;
+import com.kenboo.looprunner.Actors.PlayerBall;
+import com.kenboo.looprunner.Levels.LoadLevels;
 
 /**
  * Created by kenbo on 2017-05-06.
@@ -55,6 +59,7 @@ public class GameScreen implements Screen, InputProcessor {
         shapeRenderer = new ShapeRenderer();
         circle = new BackgroundCircle(shapeRenderer, circleRadius, thickness);
 
+
         playerBall = new PlayerBall(shapeRenderer, circleRadius, width * 0.05f, thickness);
 
         stage.addActor(circle);
@@ -86,7 +91,7 @@ public class GameScreen implements Screen, InputProcessor {
 
                 playerBall.stop();
                 blockManger.stop();
-                circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f), new GameOverScreenAction(mainGame,GameOverScreen.FAIL)));
+                circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, GameOverScreen.FAIL)));
                 gameOver = true;
             }
 
@@ -96,7 +101,7 @@ public class GameScreen implements Screen, InputProcessor {
             gameOver = true;
             System.out.println("Added");
             //this animate the circle and then change screens
-            circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f), new GameOverScreenAction(mainGame,GameOverScreen.SUCCESS)));
+            circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, GameOverScreen.SUCCESS)));
             System.out.println(circle.getScaleX());
         }
 

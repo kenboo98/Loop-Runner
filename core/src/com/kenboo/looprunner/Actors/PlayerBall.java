@@ -1,52 +1,64 @@
-package com.kenboo.looprunner;
+package com.kenboo.looprunner.Actors;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.*;
 import com.badlogic.gdx.math.Circle;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.kenboo.looprunner.GameColors;
 
 /**
- * Created by kenbo on 2017-05-06.
+ * This is the ball that the player will be controlling.
+ * It will spin around the background ring in one direction and spin in the other direction
+ * when the player touches the outside of the ring. When the player touches the inside of the ring,
+ * the ball will switch from spinning around the outside of the ring to spinning around the inside
+ * of the ring and vice versa.
  */
 
 public class PlayerBall extends Actor {
-    //radius of the player ball. RADIUS is the radius of the circle
-    float radius;
-    float backgroundCircleRadius;
+    //radius of the player ball
+    private float radius;
+    private float backgroundCircleRadius;
     //thickness of the background circle
-    float thickness;
+    private float thickness;
 
     //angle theta in radians
-    float angle;
+    private float angle;
 
     //delta angle is the rotational velocity. The inner velocity must be faster than the outer to make up for the smaller radius
     //These two values are calculted at the start
-    float deltaangleouter = 2.8f;
-    float deltaangleinner;
+    private float deltaangleouter = 2.8f;
+    private float deltaangleinner;
     //current speed of the rotation.
-    float deltaAngle = deltaangleouter;
+    private float deltaAngle = deltaangleouter;
 
-    float hypoteneuse;
+    private float hypoteneuse;
     //circle used for collision check with the squares
 
     final static int CLOCKWISE = -1;
     final static int COUNTER_CLOCKWISE = 1;
-    int direction = 1;
+    private int direction = 1;
     //use this inner rectangle for collision detection
     Circle circle;
     ShapeRenderer renderer;
 
-    public PlayerBall(ShapeRenderer renderer,float backgroundCircleRadius, float playerRadius, float thickness){
+    /**
+     * Constructor.
+     *
+     * @param renderer               The renderer to draw the circle on
+     * @param backgroundCircleRadius radius of the background circle
+     * @param radius
+     * @param thickness
+     */
+    public PlayerBall(ShapeRenderer renderer, float backgroundCircleRadius, float radius, float thickness) {
         this.backgroundCircleRadius = backgroundCircleRadius;
-        this.radius = playerRadius;
+        this.radius = radius;
         this.thickness = thickness;
         //create a cir
-        setX(backgroundCircleRadius + radius);
-        circle = new Circle(getX(),getY(),radius);
-        hypoteneuse = backgroundCircleRadius+radius;
-        deltaangleinner = deltaangleouter *(backgroundCircleRadius)/(backgroundCircleRadius - radius - thickness);
+        setX(backgroundCircleRadius + this.radius);
+        circle = new Circle(getX(), getY(), this.radius);
+        hypoteneuse = backgroundCircleRadius + this.radius;
+        deltaangleinner = deltaangleouter * (backgroundCircleRadius) / (backgroundCircleRadius - this.radius - thickness);
         this.renderer = renderer;
 
         //draw bounds
@@ -58,7 +70,7 @@ public class PlayerBall extends Actor {
         //set up renderer
         renderer.setProjectionMatrix(batch.getProjectionMatrix());
         renderer.setTransformMatrix(batch.getTransformMatrix());
-        renderer.translate(getX(), getY(), 0);
+        renderer.translate(circle.x, circle.y, 0);
         renderer.begin(ShapeRenderer.ShapeType.Filled);
         //draw circle
         renderer.setColor(GameColors.mainColor2);
@@ -109,6 +121,10 @@ public class PlayerBall extends Actor {
     public void stop(){
         //function to stop the ball when the game is done
         deltaAngle = 0;
+    }
+
+    public float getRadius() {
+        return radius;
     }
 
 }

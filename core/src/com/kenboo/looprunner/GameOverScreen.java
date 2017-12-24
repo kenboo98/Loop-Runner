@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.scenes.scene2d.Action;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
@@ -12,12 +13,15 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.scenes.scene2d.actions.SequenceAction;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.kenboo.looprunner.Actors.CircleButtonActor;
+import com.kenboo.looprunner.Actors.TextActor;
 
 /**
  This screen is for both when a user completes a level and when a user fails a level
  */
 
 public class GameOverScreen implements Screen {
+    //constants to represent the state of the last attempt
     final static int FAIL = 1;
     final static int SUCCESS = 2;
     //this flag represents if the screen is gonna display, RETRY or NEXT LEVEL
@@ -65,7 +69,7 @@ public class GameOverScreen implements Screen {
 
         mainButton.addListener(new InputListener(){
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                buttonGroup.addAction(new SequenceAction(Actions.moveTo(buttonGroup.getX(),stage.getHeight()+mainButton.getHeight(),1.5f), new StartScreenAction(mainGame)));
+                buttonGroup.addAction(new SequenceAction(Actions.moveTo(buttonGroup.getX(), stage.getHeight() + mainButton.getHeight(), 1.5f, Interpolation.sine), new StartScreenAction(mainGame)));
                 return false;
             }
         });

@@ -1,22 +1,17 @@
 package com.kenboo.looprunner;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 
 /**
- * Created by kenbo on 2017-05-08.
+ A class for each block that the user must avoid
  */
 
 public class Block extends Actor{
     //use a polygon to calculate collisions
     private Polygon polygon;
-    private GameScreen screen;
-    private float deltaX;
-    private float deltaY;
     ShapeRenderer renderer;
 
 
@@ -30,10 +25,11 @@ public class Block extends Actor{
         //set origin to the center for rotations
         this.setOrigin(getWidth()/2,getHeight()/2);
         //set the vertices of the polygon
-        float[] vertices = {0,0,0,getWidth(),getWidth(),getHeight(),0,getHeight()};
+        float[] vertices = {0, 0, getWidth(), 0, getWidth(), getHeight(), 0, getHeight()};
         polygon = new Polygon(vertices);
+        polygon.setOrigin(getOriginX(), getOriginY());
         this.renderer = renderer;
-        setDebug(true);
+        //setDebug(true);
     }
 
     public void act(float delta){
@@ -58,14 +54,15 @@ public class Block extends Actor{
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
-        renderer.setColor(GameColors.mainColor2);
 
+        renderer.setColor(GameColors.mainColor2);
         renderer.rect(-getOriginX(),-getOriginY(),getWidth(),getHeight());
-        //renderer end will be called later
         renderer.end();
+
         batch.begin();
     }
-    public Polygon getRectangle(){
+
+    public Polygon getPolygon() {
         return polygon;
     }
 

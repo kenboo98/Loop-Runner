@@ -1,36 +1,34 @@
-package com.kenboo.looprunner;
+package com.kenboo.looprunner.Actors;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
+import com.kenboo.looprunner.GameColors;
+import com.kenboo.looprunner.GameScreen;
 
 
 /**
- * Created by kenbo on 2017-05-06.
+ * This class represents the ring that the ball will rotate on.
+ * Since we cannot draw a thick ring with libgdx,
+ * we will draw two circles. A white inside and a large black circle to draw a ring.
  */
 
 public class BackgroundCircle extends Actor {
     //class to draw the circle in the background. To get a ring, draw two circles
     //thickness of the loop. Difference in the radius of the two circles.
-    float thickness;
-    //radius of outer loop
-    float radius;
-    GameScreen screen;
-    ShapeRenderer renderer;
+    private float thickness;
+
+    private GameScreen screen;
+    private ShapeRenderer renderer;
 
 
 
     public BackgroundCircle(ShapeRenderer renderer,float radius, float thickness){
         this.thickness = thickness;
-        this.radius = radius;
-        //current screen
-        this.screen = screen;
         this.setWidth(radius);
         this.setHeight(radius);
         this.renderer = renderer;
+
 
     }
     public void draw(Batch batch, float parentAlpha){

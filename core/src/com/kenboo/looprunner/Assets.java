@@ -1,7 +1,6 @@
 package com.kenboo.looprunner;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 
 /**
@@ -15,9 +14,9 @@ public class Assets {
     public static BitmapFont font96;
 
     public static void load(){
-        font64 = new BitmapFont(Gdx.files.internal("font64.fnt"));
-        font256 = new BitmapFont(Gdx.files.internal("font256.fnt"));
-        font128 = new BitmapFont(Gdx.files.internal("font128.fnt"));
-        font96 = new BitmapFont(Gdx.files.internal("font96.fnt"));
+        font64 = new BitmapFont(Gdx.files.internal("fonts/font64.fnt"));
+        font256 = new BitmapFont(Gdx.files.internal("fonts/font256.fnt"));
+        font128 = new BitmapFont(Gdx.files.internal("fonts/font128.fnt"));
+        font96 = new BitmapFont(Gdx.files.internal("fonts/font96.fnt"));
     }
 }
