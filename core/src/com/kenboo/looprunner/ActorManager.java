@@ -1,20 +1,23 @@
 package com.kenboo.looprunner;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
+import com.kenboo.looprunner.Actors.Gold;
 import com.kenboo.looprunner.Actors.PlayerBall;
 
 /**
  * Created by kenbo on 2017-05-08.
- * This Block manager handles al the collision, drawing and updating of the blocks.
+ * This actor manager handles al the collision, drawing and updating of the blocks
+ * and also the gold.
  *
  */
 
-public class BlockManager extends Group{
+public class ActorManager extends Group{
 
     ShapeRenderer renderer;
     //these vectors will be used each loop for collision detection
@@ -24,7 +27,7 @@ public class BlockManager extends Group{
 
 
     //these are temporary vectors
-    public BlockManager(ShapeRenderer renderer){
+    public ActorManager(ShapeRenderer renderer){
         //set up each block in the game through a json file
         this.renderer = renderer;
         start = new Vector2();
@@ -39,10 +42,10 @@ public class BlockManager extends Group{
         }
     }
 
-    public boolean checkCollision(PlayerBall ball){
+    public boolean blockCollision(PlayerBall ball){
 
         for (Actor block : this.getChildren()) {
-            if (intersectCirclePolygon(((Block) block).getPolygon(), ball)) {
+            if (block instanceof Block && intersectCirclePolygon(((Block) block).getPolygon(), ball.getCircle())) {
                 return true;
             }
         }
@@ -52,8 +55,8 @@ public class BlockManager extends Group{
     }
     public void stop(){
         //stops all the actions
-        for(Actor block:this.getChildren()){
-            block.clearActions();
+        for(Actor actor:this.getChildren()){
+            actor.clearActions();
         }
     }
     public boolean actionsCompleted(){
@@ -65,31 +68,50 @@ public class BlockManager extends Group{
          }return true;
     }
 
-    //use this function to detect collision between the ball and the
-    public boolean intersectCirclePolygon(Polygon polygon, PlayerBall ball) {
+    /**
+     * This function is to do collision checking between the player ball and the blocks.
+     * The blocks are treated as polygons due to the fact that it will get rotated in game.
+     * The function will simply go through each edge of the block and check if that line
+     * collides with the circle representing the player ball
+     * @param polygon
+     * @param circle
+     * @return
+     */
+    public boolean intersectCirclePolygon(Polygon polygon, Circle circle) {
         int numberVertices = polygon.getVertices().length;
 
-        for (int i = 3; i < numberVertices; i += 2) {
+        for (int i = 3; i < numberVertices+1; i += 2) {
             //this is for all the vertices except the last one
-            if (i != (numberVertices - 1)) {
+            if (i != (numberVertices +  1)) {
                 start.set(polygon.getTransformedVertices()[i - 3], polygon.getTransformedVertices()[i - 2]);
                 end.set(polygon.getTransformedVertices()[i - 1], polygon.getTransformedVertices()[i]);
-                center.set(ball.getX(), ball.getY());
+                center.set(circle.x, circle.y);
 
                 //for the last vertice, connect it with the first one
             } else {
                 start.set(polygon.getTransformedVertices()[i - 1], polygon.getTransformedVertices()[i]);
                 end.set(polygon.getTransformedVertices()[0], polygon.getTransformedVertices()[1]);
-                center.set(ball.getX(), ball.getY());
+                center.set(circle.x,circle.y);
             }
-            if (Intersector.intersectSegmentCircle(start, end, center, ball.getRadius() * ball.getRadius())) {
+            if (Intersector.intersectSegmentCircle(start, end, center, circle.radius * circle.radius)) {
                 return true;
             }
         }
         return false;
     }
+    //this function checks for a collision between the player and the gold
+    //It returns true if the player
+    public boolean goldCollision(PlayerBall player){
+        for(Actor child:getChildren()){
+            if(child instanceof Gold){
+                if(((Gold)child).getCircle().overlaps(player.getCircle())){
+                    child.remove();
 
-
+                }
+            }
+        }
+        return true;
+    }
 
 
 }

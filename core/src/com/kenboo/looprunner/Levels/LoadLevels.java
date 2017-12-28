@@ -1,7 +1,7 @@
 package com.kenboo.looprunner.Levels;
 
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.kenboo.looprunner.BlockManager;
+import com.kenboo.looprunner.ActorManager;
 
 
 /**
@@ -14,7 +14,7 @@ public class LoadLevels {
     //number of levels in the game
     public final static int N_LEVELS = 4;
 
-    public static BlockManager getLevel(int level, ShapeRenderer renderer){
+    public static ActorManager getLevel(int level, ShapeRenderer renderer){
         switch (level){
             case 1:
                 return Level1.getLevel(renderer);

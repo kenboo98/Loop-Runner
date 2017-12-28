@@ -38,13 +38,15 @@ public class GameScreen implements Screen, InputProcessor {
     private BackgroundCircle circle;
     private PlayerBall playerBall;
     //a temporary test block to test all the block functions
-    private BlockManager blockManger;
+    private ActorManager actorManager;
 
     //touch vector
     private Vector3 touchVect;
-    //use this boolean values so the events when the game is over is only called once
-    private boolean gameOver = false;
+
+    //misceallaneous
+    private boolean gameOver = false;//boolean value so gameover events are only called once
     private int level;
+    private int gold;
 
 
     public GameScreen(MainGame mainGame, int level) {
@@ -69,8 +71,8 @@ public class GameScreen implements Screen, InputProcessor {
         stage.addActor(circle);
         stage.addActor(playerBall);
         touchVect = new Vector3();
-        blockManger = LoadLevels.getLevel(level, shapeRenderer);
-        stage.addActor(blockManger);
+        actorManager = LoadLevels.getLevel(level, shapeRenderer);
+        stage.addActor(actorManager);
         this.mainGame = mainGame;
 
 
@@ -87,20 +89,25 @@ public class GameScreen implements Screen, InputProcessor {
     public void render(float delta) {
         //update
         stage.act(delta);
-        //collision event. Go to game over screen
-        if (blockManger.checkCollision(playerBall)) {
+        //collision events
+        //Gold collisions
+        if(actorManager.goldCollision(playerBall)){
+            gold++;
+        }
+        // Go to game over screen if player hits a block
+        if (actorManager.blockCollision(playerBall)) {
             //when user collides
             if (!gameOver) {
                 GameColors.invertMainColors();
 
                 playerBall.stop();
-                blockManger.stop();
+                actorManager.stop();
                 circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, GameOverScreen.FAIL)));
                 gameOver = true;
             }
 
         }
-        if (blockManger.actionsCompleted() && !gameOver) {
+        if (actorManager.actionsCompleted() && !gameOver) {
             //when the level is completed
             gameOver = true;
             System.out.println("Added");

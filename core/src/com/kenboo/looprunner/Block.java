@@ -62,7 +62,9 @@ public class Block extends Actor{
         batch.begin();
     }
 
-
+    public Polygon getPolygon() {
+        return polygon;
+    }
 
 
 }

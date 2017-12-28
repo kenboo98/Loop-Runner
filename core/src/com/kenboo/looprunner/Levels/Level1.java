@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.kenboo.looprunner.Block;
-import com.kenboo.looprunner.BlockManager;
+import com.kenboo.looprunner.ActorManager;
 
 /**
  * Created by kenbo on 2017-12-24.
@@ -12,9 +12,9 @@ import com.kenboo.looprunner.BlockManager;
 
 public class Level1 {
 
-    public static BlockManager getLevel(ShapeRenderer renderer) {
+    public static ActorManager getLevel(ShapeRenderer renderer) {
 
-        BlockManager bm = new BlockManager(renderer);
+        ActorManager bm = new ActorManager(renderer);
         Actor currentActor;
         currentActor = new Block(renderer, 0, 0, 400, 400);
         currentActor.addAction(Actions.moveTo(0, 2000, 10));

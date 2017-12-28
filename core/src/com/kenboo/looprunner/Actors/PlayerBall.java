@@ -40,6 +40,8 @@ public class PlayerBall extends Actor {
     private final static int CLOCKWISE = -1;
     private final static int COUNTER_CLOCKWISE = 1;
     private int direction = 1;
+
+
     //use this inner rectangle for collision detection
     private Circle circle;
     private ShapeRenderer renderer;
@@ -135,6 +137,9 @@ public class PlayerBall extends Actor {
 
     public float getRadius() {
         return radius;
+    }
+    public Circle getCircle() {
+        return circle;
     }
 
 }
