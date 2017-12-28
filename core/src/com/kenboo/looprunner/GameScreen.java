@@ -19,11 +19,12 @@ import com.kenboo.looprunner.Levels.LoadLevels;
  */
 
 public class GameScreen implements Screen, InputProcessor {
-    //base the radius of the circle on the width. The height will always be higher than the width.
-    float width;
-    float circleRadius;
+    public final static float STAGE_WIDTH = 1080;
+    public final static float STAGE_HEIGHT= 1920;
+
+    private float circleRadius;
     //thickness of the circle
-    float thickness = circleRadius * 0.1f;
+    private float thickness;
     private Stage stage;
     private ShapeRenderer shapeRenderer;
 
@@ -42,25 +43,28 @@ public class GameScreen implements Screen, InputProcessor {
     //touch vector
     private Vector3 touchVect;
     //use this boolean values so the events when the game is over is only called once
-    boolean gameOver = false;
-    int level;
+    private boolean gameOver = false;
+    private int level;
 
 
     public GameScreen(MainGame mainGame, int level) {
         this.level = level;
-        stage = new Stage(new FitViewport(1080, 1920));
-        stage.getCamera().position.set(0,0,0);
+        stage = new Stage(new FitViewport(STAGE_WIDTH, STAGE_HEIGHT));
+        //place the camera at the center of stage. Camera anchor is at center of canera
+        stage.getCamera().position.set(STAGE_WIDTH/2,STAGE_HEIGHT/2,0);
         Gdx.input.setInputProcessor(stage);
 
-        width = stage.getWidth();
-        circleRadius = width * 0.75f / 2;
+        //radius of the inside circle
+        circleRadius = STAGE_WIDTH * 0.75f / 2;
         thickness = circleRadius * 0.1f;
         //this shape renderer will be used by all the actors
         shapeRenderer = new ShapeRenderer();
+
         circle = new BackgroundCircle(shapeRenderer, circleRadius, thickness);
+        circle.setPosition(STAGE_WIDTH/2,STAGE_HEIGHT/2);
 
-
-        playerBall = new PlayerBall(shapeRenderer, circleRadius, width * 0.05f, thickness);
+        playerBall = new PlayerBall(shapeRenderer, circleRadius, STAGE_WIDTH * 0.05f, thickness,STAGE_WIDTH/2,STAGE_HEIGHT/2);
+        playerBall.setPosition(STAGE_WIDTH/2,STAGE_HEIGHT/2);
 
         stage.addActor(circle);
         stage.addActor(playerBall);
@@ -156,9 +160,9 @@ public class GameScreen implements Screen, InputProcessor {
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchVect = stage.getCamera().unproject(touchVect.set(screenX, screenY, 0));
-        //if the vector from the center to the touch coordinate is smaller than the radius,
+        //if the vector from the center of circle to the touch coordinate is smaller than the radius,
         //then it means that the touch is inside the circle. Then, switch sides of the ball
-        if (touchVect.len() < circleRadius) {
+        if (Vector3.len2(touchVect.x-STAGE_WIDTH/2,touchVect.y-STAGE_HEIGHT/2,0) < circleRadius*circleRadius) {
             playerBall.switchSide();
         } else {
             playerBall.switchDirection();

@@ -13,15 +13,13 @@ import com.kenboo.looprunner.BlockManager;
 public class Level1 {
 
     public static BlockManager getLevel(ShapeRenderer renderer) {
+
         BlockManager bm = new BlockManager(renderer);
-        //set up each block and its action and add it to the block manager
         Actor currentActor;
-        currentActor = new Block(renderer, 0, -600, 300, 50);
-        currentActor.addAction(Actions.moveTo(100, 800, 15));
+        currentActor = new Block(renderer, 0, 0, 400, 400);
+        currentActor.addAction(Actions.moveTo(0, 2000, 10));
         bm.addActor(currentActor);
-        currentActor = new Block(renderer, -400, 100, 50, 300);
-        currentActor.addAction(Actions.moveTo(900, 100, 12));
-        bm.addActor(currentActor);
+
         return bm;
     }
 }

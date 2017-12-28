@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 public class Block extends Actor{
     //use a polygon to calculate collisions
     private Polygon polygon;
-    ShapeRenderer renderer;
+    private ShapeRenderer renderer;
 
 
 
@@ -29,7 +29,7 @@ public class Block extends Actor{
         polygon = new Polygon(vertices);
         polygon.setOrigin(getOriginX(), getOriginY());
         this.renderer = renderer;
-        //setDebug(true);
+        setDebug(true);
     }
 
     public void act(float delta){
@@ -62,9 +62,7 @@ public class Block extends Actor{
         batch.begin();
     }
 
-    public Polygon getPolygon() {
-        return polygon;
-    }
+
 
 
 }
