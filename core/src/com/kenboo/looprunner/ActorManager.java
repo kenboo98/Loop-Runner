@@ -106,11 +106,11 @@ public class ActorManager extends Group{
             if(child instanceof Gold){
                 if(((Gold)child).getCircle().overlaps(player.getCircle())){
                     child.remove();
-
+                    return true;
                 }
             }
         }
-        return true;
+        return false;
     }
 
 

@@ -12,6 +12,9 @@ public class GameColors {
     public static Color mainColor1 = Color.WHITE;
     //color of background
     public static Color mainColor2 = Color.BLACK;
+    //colour of gold
+    public static Color miscColor1 = Color.GOLD;
+    public static Color miscColor2 = Color.LIGHT_GRAY;
 
     public static void resetColors(){
         mainColor1 = Color.WHITE;

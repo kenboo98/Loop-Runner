@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.actions.Actions;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.kenboo.looprunner.Actors.BackgroundCircle;
+import com.kenboo.looprunner.Actors.GoldIndicator;
 import com.kenboo.looprunner.Actors.PlayerBall;
 import com.kenboo.looprunner.Levels.LoadLevels;
 
@@ -37,6 +38,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     private BackgroundCircle circle;
     private PlayerBall playerBall;
+    private GoldIndicator goldIndicator;
     //a temporary test block to test all the block functions
     private ActorManager actorManager;
 
@@ -46,7 +48,6 @@ public class GameScreen implements Screen, InputProcessor {
     //misceallaneous
     private boolean gameOver = false;//boolean value so gameover events are only called once
     private int level;
-    private int gold;
 
 
     public GameScreen(MainGame mainGame, int level) {
@@ -68,8 +69,12 @@ public class GameScreen implements Screen, InputProcessor {
         playerBall = new PlayerBall(shapeRenderer, circleRadius, STAGE_WIDTH * 0.05f, thickness,STAGE_WIDTH/2,STAGE_HEIGHT/2);
         playerBall.setPosition(STAGE_WIDTH/2,STAGE_HEIGHT/2);
 
+        goldIndicator = new GoldIndicator(5,shapeRenderer);
+
         stage.addActor(circle);
         stage.addActor(playerBall);
+        stage.addActor(goldIndicator);
+        Gdx.app.log("Gold",Integer.toString(goldIndicator.getGold()));
         touchVect = new Vector3();
         actorManager = LoadLevels.getLevel(level, shapeRenderer);
         stage.addActor(actorManager);
@@ -92,7 +97,7 @@ public class GameScreen implements Screen, InputProcessor {
         //collision events
         //Gold collisions
         if(actorManager.goldCollision(playerBall)){
-            gold++;
+            goldIndicator.incGold();
         }
         // Go to game over screen if player hits a block
         if (actorManager.blockCollision(playerBall)) {

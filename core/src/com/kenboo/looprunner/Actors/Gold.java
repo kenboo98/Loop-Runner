@@ -43,8 +43,7 @@ public class Gold extends Actor {
 
         renderer.begin(ShapeRenderer.ShapeType.Filled);
 
-
-        renderer.setColor(GameColors.mainColor2);
+        renderer.setColor(GameColors.miscColor1);
         renderer.circle(0,0,circle.radius);
         renderer.end();
 
