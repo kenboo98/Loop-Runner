@@ -10,17 +10,18 @@ import com.kenboo.looprunner.GameColors;
  * Created by root on 27/12/17.
  */
 
-public class Gold extends Actor {
+public class Coin extends Actor {
     private ShapeRenderer renderer;
     //circle to represent the gold coin. This will be used for collision later.
     private Circle circle;
+    private final static int RADIUS = 40;
 
-    public Gold(float x, float y,float radius, ShapeRenderer renderer){
+    public Coin(float x, float y, ShapeRenderer renderer){
         setX(x);
         setY(y);
         this.renderer = renderer;
         //place circle in same spot
-        circle = new Circle(x,y,radius);
+        circle = new Circle(x,y,RADIUS);
     }
     public void act(float delta){
         super.act(delta);

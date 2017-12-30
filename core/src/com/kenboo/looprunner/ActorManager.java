@@ -7,7 +7,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
-import com.kenboo.looprunner.Actors.Gold;
+import com.kenboo.looprunner.Actors.Coin;
 import com.kenboo.looprunner.Actors.PlayerBall;
 
 /**
@@ -103,8 +103,8 @@ public class ActorManager extends Group{
     //It returns true if the player
     public boolean goldCollision(PlayerBall player){
         for(Actor child:getChildren()){
-            if(child instanceof Gold){
-                if(((Gold)child).getCircle().overlaps(player.getCircle())){
+            if(child instanceof Coin){
+                if(((Coin)child).getCircle().overlaps(player.getCircle())){
                     child.remove();
                     return true;
                 }
