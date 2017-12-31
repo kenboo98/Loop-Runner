@@ -13,7 +13,7 @@ import com.kenboo.looprunner.ActorManager;
  * Created by kenbo on 2017-12-24.
  */
 
-public class Level1 {
+public class Level1{
 
     public static ActorManager getLevel(ShapeRenderer renderer) {
 

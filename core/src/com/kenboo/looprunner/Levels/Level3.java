@@ -31,13 +31,10 @@ public class Level3 {
         currentActor.addAction(new ParallelAction(Actions.moveTo(1080,1365,8),Actions.rotateBy(360,10)));
         bm.addActor(currentActor);
 
-        currentActor = new Block(renderer,1920,1080,80,420);
+        currentActor = new Block(renderer,1920,1080,200,420);
         currentActor.addAction(new ParallelAction(Actions.moveTo(-200,-200,10),Actions.rotateBy(180,10)));
         bm.addActor(currentActor);
 
-        currentActor = new Block(renderer,1920,1080,80,420);
-        currentActor.addAction(new ParallelAction(Actions.moveTo(-200,-200,10),Actions.rotateBy(180,10)));
-        bm.addActor(currentActor);
 
         //add coins
         currentActor = new Coin(-100,1000,renderer);
@@ -48,7 +45,7 @@ public class Level3 {
         currentActor.addAction(Actions.moveTo(600,0,5, Interpolation.circleIn));
         bm.addActor(currentActor);
 
-        currentActor = new Coin(0,0,renderer);
+        currentActor = new Coin(-100,-100,renderer);
         currentActor.addAction(new SequenceAction(Actions.delay(7),Actions.moveTo(2000,2000,3)));
         bm.addActor(currentActor);
 
