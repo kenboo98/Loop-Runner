@@ -25,22 +25,23 @@ public class GameOverScreen implements Screen {
     final static int FAIL = 1;
     final static int SUCCESS = 2;
     //this flag represents if the screen is gonna display, RETRY or NEXT LEVEL
-    int flag;
-    int currentLevel;
+    private int flag;
+    private int currentLevel;
 
-    MainGame mainGame;
-    Stage stage;
-    ShapeRenderer renderer;
+    private MainGame mainGame;
+    private Stage stage;
+    private ShapeRenderer renderer;
     //main button
-    CircleButtonActor mainButton;
-    TextActor mainButtonText;
+    private CircleButtonActor mainButton;
+    private TextActor mainButtonText;
     //button group to group the button and button text togethher
-    Group buttonGroup;
+    private Group buttonGroup;
 
     public GameOverScreen(MainGame main, int flag, int currentLevel){
         this.flag = flag;
         this.currentLevel = currentLevel;
         this.mainGame = main;
+
 
     }
 

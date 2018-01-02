@@ -43,7 +43,7 @@ public class Level5 {
         currentActor.addAction(new SequenceAction(Actions.moveTo(1120,1940,4)));
         bm.addActor(currentActor);
 
-        currentActor = new Coin(0,1940,renderer);
+        currentActor = new Coin(-40,1940,renderer);
         currentActor.addAction(new SequenceAction(Actions.delay(8),Actions.moveTo(1120,0,10, Interpolation.circle)));
         bm.addActor(currentActor);
         currentActor = new Coin(-40,1000,renderer);

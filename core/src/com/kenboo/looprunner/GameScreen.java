@@ -2,6 +2,7 @@ package com.kenboo.looprunner;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
@@ -70,14 +71,17 @@ public class GameScreen implements Screen, InputProcessor {
         playerBall.setPosition(STAGE_WIDTH/2,STAGE_HEIGHT/2);
 
         coinIndicator = new CoinIndicator(LoadLevels.coinNum[level-1],shapeRenderer);
+        actorManager = LoadLevels.getLevel(level, shapeRenderer);
 
+
+       //add actors in this order for proper drawing order
         stage.addActor(circle);
+        stage.addActor(actorManager);
         stage.addActor(playerBall);
         stage.addActor(coinIndicator);
 
         touchVect = new Vector3();
-        actorManager = LoadLevels.getLevel(level, shapeRenderer);
-        stage.addActor(actorManager);
+
         this.mainGame = mainGame;
 
 
@@ -104,27 +108,47 @@ public class GameScreen implements Screen, InputProcessor {
             //when user collides
             if (!gameOver) {
                 GameColors.invertMainColors();
-
-                playerBall.stop();
-                actorManager.stop();
-                circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, GameOverScreen.FAIL)));
-                gameOver = true;
+                endGame(GameOverScreen.FAIL);
             }
 
         }
+        //This event is when the player completes the
         if (actorManager.actionsCompleted() && !gameOver) {
-            //when the level is completed
-            gameOver = true;
-            System.out.println("Added");
-            //this animate the circle and then change screens
-            circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, GameOverScreen.SUCCESS)));
-            System.out.println(circle.getScaleX());
-        }
+            endGame(GameOverScreen.SUCCESS);
+       }
 
 
         //draw
         stage.draw();
 
+
+    }
+    //Runs all end game animations and saves the current completed level
+    private void endGame(int flag){
+        gameOver = true;
+        if(flag == GameOverScreen.FAIL){
+            GameColors.invertMainColors();
+            playerBall.stop();
+        }
+        else if(flag == GameOverScreen.SUCCESS){
+            Preferences prefs = Gdx.app.getPreferences("game_data");
+            //place the data for which is the highest unlocked level
+            if(prefs.getInteger("unlocked_level",1)<level){
+                prefs.putInteger("unlocked_level",level);
+            }
+            //place the coin data if player got more coin
+            //the coin data key is in the "levelnumber"_coins format
+            if(prefs.getInteger(Integer.toString(level)+"_coins",0)<coinIndicator.getCoin()){
+                prefs.putInteger(Integer.toString(level)+"_coins",coinIndicator.getCoin());
+            }
+            prefs.flush();
+
+        }
+        //stop the actors
+
+        actorManager.stop();
+        //
+        circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, flag)));
 
     }
 

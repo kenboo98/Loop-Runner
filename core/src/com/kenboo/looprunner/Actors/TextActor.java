@@ -29,8 +29,8 @@ public class TextActor extends Actor {
         //draw it centered at the x and y position on the batch
         font.draw(batch,text,getX()-glyphLayout.width/2, getY()+glyphLayout.height/2);
     }
-    public void setLevelText(int level){
-        this.text = "LEVEL:"+Integer.toString(level);
+    public void setText(String text){
+        this.text = text;
     }
 
 }
