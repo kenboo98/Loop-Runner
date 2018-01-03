@@ -12,8 +12,8 @@ import com.kenboo.looprunner.ActorManager;
 
 public class LoadLevels {
     //number of levels in the game
-    public final static int N_LEVELS = 5;
-    public final static int[] coinNum ={2,2,3,3,3};//number of coins for each level
+    public final static int N_LEVELS = 6;
+    public final static int[] coinNum = {2, 2, 3, 3, 3, 3};//number of coins for each level
     public static ActorManager getLevel(int level, ShapeRenderer renderer){
         switch (level){
             case 1:
@@ -24,8 +24,10 @@ public class LoadLevels {
                 return Level3.getLevel(renderer);
             case 4:
                 return Level4.getLevel(renderer);
-            default:
+            case 5:
                 return Level5.getLevel(renderer);
+            default:
+                return Level6.getLevel(renderer);
         }
     }
 

@@ -147,7 +147,7 @@ public class GameScreen implements Screen, InputProcessor {
         //stop the actors
 
         actorManager.stop();
-        //
+        //Add a sec
         circle.addAction(Actions.sequence(Actions.scaleTo(3, 3, 1.5f, Interpolation.sine), new GameOverScreenAction(mainGame, flag)));
 
     }
