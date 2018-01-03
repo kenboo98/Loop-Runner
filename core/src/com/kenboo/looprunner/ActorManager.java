@@ -78,9 +78,10 @@ public class ActorManager extends Group{
      * @return
      */
     public boolean intersectCirclePolygon(Polygon polygon, Circle circle) {
+
         int numberVertices = polygon.getVertices().length;
 
-        for (int i = 3; i < numberVertices+1; i += 2) {
+        for (int i = 3; i <= numberVertices+1; i += 2) {
             //this is for all the vertices except the last one
             if (i != (numberVertices +  1)) {
                 start.set(polygon.getTransformedVertices()[i - 3], polygon.getTransformedVertices()[i - 2]);
@@ -89,7 +90,7 @@ public class ActorManager extends Group{
 
                 //for the last vertice, connect it with the first one
             } else {
-                start.set(polygon.getTransformedVertices()[i - 1], polygon.getTransformedVertices()[i]);
+                start.set(polygon.getTransformedVertices()[i-3], polygon.getTransformedVertices()[i-2]);
                 end.set(polygon.getTransformedVertices()[0], polygon.getTransformedVertices()[1]);
                 center.set(circle.x,circle.y);
             }

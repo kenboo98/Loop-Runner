@@ -29,7 +29,7 @@ public class Block extends Actor{
         polygon = new Polygon(vertices);
         polygon.setOrigin(getOriginX(), getOriginY());
         this.renderer = renderer;
-        //setDebug(true);
+        setDebug(true);
     }
 
     public void act(float delta){

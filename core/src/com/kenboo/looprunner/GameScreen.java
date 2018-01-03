@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Interpolation;
 import com.badlogic.gdx.math.Vector3;
@@ -49,7 +50,7 @@ public class GameScreen implements Screen, InputProcessor {
     //misceallaneous
     private boolean gameOver = false;//boolean value so gameover events are only called once
     private int level;
-
+    FPSLogger fpsLogger;
 
     public GameScreen(MainGame mainGame, int level) {
         this.level = level;
@@ -83,7 +84,7 @@ public class GameScreen implements Screen, InputProcessor {
         touchVect = new Vector3();
 
         this.mainGame = mainGame;
-
+        fpsLogger = new FPSLogger();
 
     }
 
@@ -96,6 +97,7 @@ public class GameScreen implements Screen, InputProcessor {
 
     @Override
     public void render(float delta) {
+        fpsLogger.log();
         //update
         stage.act(delta);
         //collision events
