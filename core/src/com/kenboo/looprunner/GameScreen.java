@@ -108,16 +108,15 @@ public class GameScreen implements Screen, InputProcessor {
         // Go to game over screen if player hits a block
         if (actorManager.blockCollision(playerBall)) {
             //when user collides
-            if (!gameOver) {
-                GameColors.invertMainColors();
-                endGame(GameOverScreen.FAIL);
-            }
+            if (!gameOver) endGame(GameOverScreen.FAIL);
 
         }
-        //This event is when the player completes the
-        if (actorManager.actionsCompleted() && !gameOver) {
+        //This event is when the player completes the level
+        if (actorManager.actionsCompleted() && !gameOver){
             endGame(GameOverScreen.SUCCESS);
-       }
+        }
+
+
 
 
         //draw
