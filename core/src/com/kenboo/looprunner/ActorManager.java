@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Circle;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
@@ -80,7 +81,8 @@ public class ActorManager extends Group{
     public boolean intersectCirclePolygon(Polygon polygon, Circle circle) {
 
         int numberVertices = polygon.getVertices().length;
-
+        //do quick bound checks before the full check with each polygon line
+        if(!quickCheck(polygon.getBoundingRectangle(),circle)) return false;
         for (int i = 3; i <= numberVertices+1; i += 2) {
             //this is for all the vertices except the last one
             if (i != (numberVertices +  1)) {
@@ -114,5 +116,20 @@ public class ActorManager extends Group{
         return false;
     }
 
+    /**
+     * A quick check to be preformed before doing the more accurate bound checks
+     *
+     * @param bound
+     * @param circle
+     * @return wether or
+     */
+    private boolean quickCheck(Rectangle bound, Circle circle){
+        if(circle.x + circle.radius <bound.getX()) return false;
+        if(circle.x - circle.radius > bound.getX()+bound.getWidth()) return false;
+        if(circle.y + circle.radius <bound.getY()) return false;
+        if(circle.y - circle.radius > bound.getY()+bound.getHeight()) return false;
+        return true;
+
+    }
 
 }
