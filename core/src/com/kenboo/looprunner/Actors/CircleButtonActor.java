@@ -10,8 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
  */
 
 public class CircleButtonActor extends Actor {
-    ShapeRenderer renderer;
-    float radius;
+    private ShapeRenderer renderer;
+    private float radius;
 
     public CircleButtonActor( ShapeRenderer renderer,Color color, float radius){
         setColor(color);

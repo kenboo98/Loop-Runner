@@ -22,7 +22,7 @@ import com.kenboo.looprunner.Levels.LoadLevels;
  * Created by kenbo on 2017-05-08.
  */
 
-public class StartScreen implements Screen {
+public class MenuScreen implements Screen {
 
     public final static float STAGE_WIDTH = 1080;
     public final static float STAGE_HEIGHT= 1920;
@@ -41,7 +41,7 @@ public class StartScreen implements Screen {
 
     private final static float ARROW_BUTTON_HEIGHT = 128;
 
-    StartScreen(MainGame mainGame) {
+    MenuScreen(MainGame mainGame) {
         this.mainGame = mainGame;
         //this preference file stores all the
         prefs = Gdx.app.getPreferences("game_data");
