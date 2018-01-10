@@ -26,7 +26,7 @@ public class MainGame extends Game {
         Gdx.app.log("HEIGHT: ", Float.toString(Gdx.graphics.getHeight()));
         Gdx.app.log("WIDTH: ", Float.toString(Gdx.graphics.getWidth()));
         //first initialize a start screen
-        currentScreen = new StartScreen(this);
+        currentScreen = new MenuScreen(this);
         setScreen(currentScreen);
     }
 
